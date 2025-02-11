@@ -8,7 +8,7 @@ class ViewProducts(QWidget):
 
     def initUI(self):
         self.setWindowTitle("Lista de Productos")
-        self.setGeometry(150, 150, 500, 300)
+        self.setGeometry(150, 150, 600, 300)  # Ampliamos un poco la ventana para la nueva columna
 
         layout = QVBoxLayout()
         self.table = QTableWidget()
@@ -21,13 +21,14 @@ class ViewProducts(QWidget):
         productos = Producto.get_all()  # Obtener productos usando la clase Producto
 
         self.table.setRowCount(len(productos))
-        self.table.setColumnCount(4)  # Ahora tenemos 4 columnas
-        self.table.setHorizontalHeaderLabels(["Nombre", "Marca", "Precio", "Stock"])
+        self.table.setColumnCount(5)  # Ahora tenemos 5 columnas
+        self.table.setHorizontalHeaderLabels(["Nombre", "Marca", "Tipo", "Precio", "Stock"])
 
         for row, producto in enumerate(productos):
             self.table.setItem(row, 0, QTableWidgetItem(producto.nombre))
-            self.table.setItem(row, 1, QTableWidgetItem(producto.marca))
-            self.table.setItem(row, 2, QTableWidgetItem(f"${producto.precio:.2f}"))  # Formatear precio
-            self.table.setItem(row, 3, QTableWidgetItem(str(producto.stock)))
+            self.table.setItem(row, 1, QTableWidgetItem(producto.marca.nombre))  # Usamos nombre de la marca
+            self.table.setItem(row, 2, QTableWidgetItem(producto.tipo.value))  # Mostramos el tipo legible
+            self.table.setItem(row, 3, QTableWidgetItem(f"${producto.precio:.2f}"))  # Formateamos el precio
+            self.table.setItem(row, 4, QTableWidgetItem(str(producto.stock)))
 
         self.table.resizeColumnsToContents()  # Ajustar el ancho de las columnas automáticamente
