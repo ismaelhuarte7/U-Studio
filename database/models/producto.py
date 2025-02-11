@@ -73,4 +73,25 @@ class Producto:
 
         conn.close()
         return productos
+    
+    @staticmethod
+    def get_by_marca(marca_id):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT p.id, p.nombre, p.marca_id, p.precio, p.stock, p.tipo, m.nombre
+            FROM productos p
+            JOIN marcas m ON p.marca_id = m.id
+            WHERE p.marca_id = %s
+        """, (marca_id,))
+        
+        productos = []
+        for row in cursor.fetchall():
+            id_producto, nombre, marca_id, precio, stock, tipo_str, marca_nombre = row
+            marca = Marca(id=marca_id, nombre=marca_nombre)
+            tipo = TipoProducto(tipo_str)
+            productos.append(Producto(id=id_producto, nombre=nombre, marca=marca, precio=precio, stock=stock, tipo=tipo))
+        
+        conn.close()
+        return productos
 

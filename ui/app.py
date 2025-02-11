@@ -3,6 +3,7 @@ from ui.product_form import ProductForm
 from ui.sales_form import SalesForm
 from ui.view_products import ViewProducts
 from ui.brand_form import BrandForm
+from ui.view_brands import ViewBrands
 
 class App(QWidget):
     def __init__(self):
@@ -19,16 +20,19 @@ class App(QWidget):
         self.btn_ver_productos = QPushButton("Ver mis Productos")
         self.btn_registrar_venta = QPushButton("Registrar Venta")
         self.btn_registrar_marca = QPushButton("Registrar Marca")
+        self.btn_ver_marcas = QPushButton("Ver Marcas")
         
         self.btn_registrar_producto.clicked.connect(self.show_product_form)
         self.btn_ver_productos.clicked.connect(self.show_view_products)
         self.btn_registrar_venta.clicked.connect(self.show_sales_form)
         self.btn_registrar_marca.clicked.connect(self.show_brand_form)
+        self.btn_ver_marcas.clicked.connect(self.show_view_brands)
         
         layout.addWidget(self.btn_registrar_producto)
         layout.addWidget(self.btn_ver_productos)
         layout.addWidget(self.btn_registrar_venta)
         layout.addWidget(self.btn_registrar_marca)
+        layout.addWidget(self.btn_ver_marcas)
         
         self.setLayout(layout)
 
@@ -48,3 +52,7 @@ class App(QWidget):
     def show_brand_form(self):
         self.brand_form = BrandForm()
         self.brand_form.show()
+
+    def show_view_brands(self):
+        self.view_brands = ViewBrands()
+        self.view_brands.show()
