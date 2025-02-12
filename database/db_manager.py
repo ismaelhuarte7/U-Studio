@@ -1,6 +1,7 @@
 import pymysql
 import os
 from dotenv import load_dotenv
+from random import randint, choice
 
 load_dotenv()
 
@@ -46,4 +47,42 @@ def reset_database():
     finally:
         cursor.close()
         conn.close()
+
+    from database.models.marca import Marca
+
+
+
+def seed():
+    from database.models.producto import Producto, TipoProducto
+    from database.models.marca import Marca
+    # Crear marcas
+    marcas = [
+        "Nike", "Adidas", "Puma", "Reebok", "Under Armour"
+    ]
+
+    marca_objects = []
+    for marca in marcas:
+        marca_obj = Marca(nombre=marca, telefono=f"1234-5678", duracion_contrato=2, fecha_inicio_contrato="2025-01-01")
+        marca_obj.save()
+        marca_objects.append(marca_obj)
+    
+    # Tipos de productos
+    tipos_producto = [TipoProducto.ACCESORIO, TipoProducto.REMERA, TipoProducto.JEAN, TipoProducto.SHORT, TipoProducto.HODDIE, TipoProducto.CALZADO, TipoProducto.CAMISA]
+
+    # Crear productos
+    for marca in marca_objects:
+        for _ in range(10):  # Crear 10 productos para cada marca
+            tipo = choice(tipos_producto)
+            producto = Producto(
+                nombre=f"{marca.nombre} {tipo.value} {randint(1, 100)}",
+                marca=marca,
+                precio=round(randint(20, 150), 2),
+                stock=randint(1, 50),
+                tipo=tipo
+            )
+            producto.save()
+
+    print("Seed completed.")
+
+
 
